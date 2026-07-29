@@ -1,0 +1,1 @@
+-- SQLite schema placeholder. Tables will be defined in a later lab step.
