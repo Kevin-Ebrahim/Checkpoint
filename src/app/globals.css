@@ -1,6 +1,45 @@
 @import "tailwindcss";
 
+:root {
+  --background: #f3df8b;
+  --foreground: #111111;
+  --surface: #ead57f;
+  --muted: #d7c36f;
+  --border: #111111;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+}
+
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
+  background-image: radial-gradient(rgba(17, 17, 17, 0.14) 0.65px, transparent 0.65px);
+  background-size: 5px 5px;
+  color: var(--foreground);
+  font-family: "Courier New", Courier, monospace;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button,
+  input,
+  textarea {
+    transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+  }
 }

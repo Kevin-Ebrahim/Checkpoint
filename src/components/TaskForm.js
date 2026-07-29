@@ -18,53 +18,56 @@ export default function TaskForm() {
   return (
     <form
       action={formAction}
-      className="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="relative border-2 border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6"
       ref={formRef}
     >
-      <div>
-        <h2 className="text-xl font-semibold">Create a task</h2>
-        <p className="mt-1 text-sm text-slate-600">Add the details for your next task.</p>
+      <span aria-hidden="true" className="absolute left-2 top-2 h-2 w-2 border border-[var(--border)]" />
+      <span aria-hidden="true" className="absolute bottom-2 right-2 h-2 w-2 bg-[var(--foreground)]" />
+      <div className="border-b border-dashed border-[var(--border)] pb-4">
+        <p className="text-[10px] font-bold tracking-[0.2em]">ENTRY MODULE / 01</p>
+        <h2 className="mt-1 text-2xl font-black uppercase tracking-[-0.06em]">Create task</h2>
+        <p className="mt-2 max-w-sm text-sm leading-relaxed">Log the next item in your active task queue.</p>
       </div>
 
       {state.error ? (
-        <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+        <p className="mt-5 border-2 border-[var(--border)] bg-[var(--foreground)] px-3 py-2 text-sm font-bold text-[var(--background)]" role="alert">
           {state.error}
         </p>
       ) : null}
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <label className="space-y-1 sm:col-span-2">
-          <span className="text-sm font-medium">Title</span>
+      <div className="mt-5 grid gap-5 sm:grid-cols-2">
+        <label className="space-y-2 sm:col-span-2">
+          <span className="block text-[11px] font-bold tracking-[0.15em]">TITLE *</span>
           <input
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full border-2 border-[var(--border)] bg-[#f8edbd] px-3 py-2 text-sm outline-none placeholder:text-black/50 focus:bg-white focus:ring-2 focus:ring-[var(--foreground)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
             name="title"
             required
             type="text"
           />
         </label>
 
-        <label className="space-y-1 sm:col-span-2">
-          <span className="text-sm font-medium">Description</span>
+        <label className="space-y-2 sm:col-span-2">
+          <span className="block text-[11px] font-bold tracking-[0.15em]">DESCRIPTION</span>
           <textarea
-            className="min-h-24 w-full rounded-md border border-slate-300 px-3 py-2"
+            className="min-h-28 w-full border-2 border-[var(--border)] bg-[#f8edbd] px-3 py-2 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-[var(--foreground)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
             name="description"
           />
         </label>
 
-        <label className="space-y-1">
-          <span className="text-sm font-medium">Due date</span>
+        <label className="space-y-2">
+          <span className="block text-[11px] font-bold tracking-[0.15em]">DUE DATE *</span>
           <input
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full border-2 border-[var(--border)] bg-[#f8edbd] px-3 py-2 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-[var(--foreground)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
             name="dueDate"
             required
             type="date"
           />
         </label>
 
-        <label className="space-y-1">
-          <span className="text-sm font-medium">Topic</span>
+        <label className="space-y-2">
+          <span className="block text-[11px] font-bold tracking-[0.15em]">TOPIC *</span>
           <input
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full border-2 border-[var(--border)] bg-[#f8edbd] px-3 py-2 text-sm outline-none focus:bg-white focus:ring-2 focus:ring-[var(--foreground)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
             name="topic"
             required
             type="text"
@@ -73,7 +76,7 @@ export default function TaskForm() {
       </div>
 
       <button
-        className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+        className="mt-6 w-full border-2 border-[var(--border)] bg-[var(--foreground)] px-4 py-3 text-sm font-bold uppercase tracking-[0.12em] text-[var(--background)] hover:bg-transparent hover:text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)] focus:ring-offset-2 focus:ring-offset-[var(--surface)] disabled:cursor-not-allowed disabled:border-black/40 disabled:bg-black/30 disabled:text-black/60"
         disabled={isPending}
         type="submit"
       >
