@@ -224,6 +224,70 @@ button:disabled {
   line-height: 1.55;
 }
 
+.sort-control {
+  display: flex;
+  margin-top: 1.25rem;
+  border: 2px solid var(--border);
+  background: var(--paper);
+}
+
+.sort-control-label {
+  display: flex;
+  align-items: center;
+  background: var(--foreground);
+  color: var(--paper);
+  padding: 0.7rem 0.8rem;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.sort-links {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.sort-link {
+  display: flex;
+  min-height: 2.75rem;
+  flex: 1 1 7rem;
+  align-items: center;
+  gap: 0.45rem;
+  border-left: 1px dashed var(--border);
+  color: var(--foreground);
+  padding: 0.6rem 0.7rem;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.sort-link:hover,
+.sort-link.is-active {
+  background: var(--background);
+}
+
+.sort-link.is-active {
+  box-shadow: inset 0 -3px 0 var(--foreground);
+}
+
+.sort-link-check {
+  display: grid;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid currentColor;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
 .task-list-wrap {
   margin-top: 1.4rem;
 }
@@ -714,6 +778,7 @@ button:disabled {
 .button-secondary:focus-visible,
 .button-danger:focus-visible,
 .status-option:focus-visible,
+.sort-link:focus-visible,
 .nav-link:focus-visible {
   outline: 3px solid var(--foreground);
   outline-offset: 3px;
@@ -807,6 +872,18 @@ button:disabled {
 
   .section-heading h2 {
     font-size: 2rem;
+  }
+
+  .sort-control {
+    flex-direction: column;
+  }
+
+  .sort-control-label {
+    justify-content: center;
+  }
+
+  .sort-link {
+    border-top: 1px dashed var(--border);
   }
 
   .record-count {

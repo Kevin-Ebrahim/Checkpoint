@@ -1,12 +1,22 @@
+import Link from "next/link";
 import AppHeader from "../components/AppHeader";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
-import { getActiveTasks } from "../lib/tasks";
+import { getActiveTasks, normalizeActiveTaskSort } from "../lib/tasks";
 
 export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const tasks = getActiveTasks();
+const sortOptions = [
+  { label: "Newest first", value: "newest" },
+  { label: "Topic", value: "topic" },
+  { label: "Status", value: "status" },
+  { label: "Due date", value: "due-date" },
+];
+
+export default async function Home({ searchParams }) {
+  const params = await searchParams;
+  const selectedSort = normalizeActiveTaskSort(params?.sort);
+  const tasks = getActiveTasks(selectedSort);
 
   return (
     <main className="app-shell">
@@ -33,6 +43,26 @@ export default function Home() {
               <span className="record-count">{String(tasks.length).padStart(2, "0")}</span>
             </div>
             <p className="section-intro">Check tasks off as you finish them, or use the status control for work still in progress.</p>
+            <nav aria-label="Sort active tasks" className="sort-control">
+              <span className="sort-control-label">Sort by</span>
+              <div className="sort-links">
+                {sortOptions.map((option) => {
+                  const isSelected = selectedSort === option.value;
+
+                  return (
+                    <Link
+                      aria-current={isSelected ? "page" : undefined}
+                      className={isSelected ? "sort-link is-active" : "sort-link"}
+                      href={`/?sort=${option.value}`}
+                      key={option.value}
+                    >
+                      <span aria-hidden="true" className="sort-link-check">{isSelected ? "✓" : ""}</span>
+                      {option.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </nav>
             <div className="task-list-wrap">
               <TaskList tasks={tasks} />
             </div>

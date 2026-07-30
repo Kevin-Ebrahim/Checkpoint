@@ -2,6 +2,23 @@ import { getDatabase } from "./db";
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 export const TASK_STATUSES = ["Todo", "In-Progress", "Complete"];
+const DEFAULT_ACTIVE_TASK_SORT = "newest";
+const ACTIVE_TASK_ORDER_BY = {
+  newest: "id DESC",
+  topic: "topic COLLATE NOCASE ASC, id DESC",
+  status: `CASE status
+    WHEN 'Todo' THEN 1
+    WHEN 'In-Progress' THEN 2
+    WHEN 'Complete' THEN 3
+    END ASC, id DESC`,
+  "due-date": "due_date ASC, id DESC",
+};
+
+export function normalizeActiveTaskSort(sort) {
+  return typeof sort === "string" && Object.hasOwn(ACTIVE_TASK_ORDER_BY, sort)
+    ? sort
+    : DEFAULT_ACTIVE_TASK_SORT;
+}
 
 function isValidDate(value) {
   if (!DATE_PATTERN.test(value)) {
@@ -137,12 +154,15 @@ export function updateTaskStatus(id, status) {
     .get(validation.value.id);
 }
 
-export function getActiveTasks() {
+export function getActiveTasks(sort = DEFAULT_ACTIVE_TASK_SORT) {
+  const selectedSort = normalizeActiveTaskSort(sort);
+  const orderBy = ACTIVE_TASK_ORDER_BY[selectedSort];
+
   return getDatabase()
     .prepare(
       `SELECT * FROM tasks
        WHERE archived_at IS NULL
-       ORDER BY id DESC`,
+       ORDER BY ${orderBy}`,
     )
     .all();
 }
