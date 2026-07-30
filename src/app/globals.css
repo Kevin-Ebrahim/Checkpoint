@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f3df8b;
-  --foreground: #111111;
-  --surface: #ead57f;
-  --muted: #d7c36f;
-  --border: #111111;
+  --background: #e8d277;
+  --foreground: #10120f;
+  --surface: #dac367;
+  --paper: #f6e9b0;
+  --muted: #b8a653;
+  --border: #10120f;
 }
 
 * {
@@ -19,16 +20,33 @@ html {
 body {
   margin: 0;
   background-color: var(--background);
-  background-image: radial-gradient(rgba(17, 17, 17, 0.14) 0.65px, transparent 0.65px);
-  background-size: 5px 5px;
+  background-image:
+    linear-gradient(rgba(16, 18, 15, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 18, 15, 0.055) 1px, transparent 1px);
+  background-size: 32px 32px;
   color: var(--foreground);
-  font-family: "Courier New", Courier, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 button,
 input,
+select,
 textarea {
+  border-radius: 0;
   font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 ::selection {
@@ -36,10 +54,762 @@ textarea {
   color: var(--background);
 }
 
+.app-shell {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.app-frame {
+  margin: 0 auto;
+  max-width: 74rem;
+}
+
+.compact-frame {
+  max-width: 58rem;
+}
+
+.masthead {
+  border: 3px solid var(--border);
+  background: var(--paper);
+  box-shadow: 8px 8px 0 var(--foreground);
+}
+
+.masthead-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(24rem, 0.8fr);
+}
+
+.masthead-logo {
+  position: relative;
+  min-height: 13.5rem;
+  overflow: hidden;
+  background: #282b27;
+}
+
+.masthead-logo img {
+  filter: contrast(1.08) saturate(0.9);
+  transform: scale(1.04);
+}
+
+.masthead-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 3px solid var(--border);
+  background: var(--foreground);
+  color: var(--paper);
+  padding: 1.75rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.17em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.masthead-copy h1 {
+  margin: 0.55rem 0 0;
+  max-width: 100%;
+  font-size: clamp(2.1rem, 3.7vw, 4.15rem);
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  line-height: 0.88;
+  overflow-wrap: break-word;
+  text-transform: uppercase;
+}
+
+.masthead-description {
+  margin: 1.25rem 0 0;
+  max-width: 26rem;
+  font-size: 0.79rem;
+  line-height: 1.55;
+}
+
+.masthead-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 3px solid var(--border);
+  padding: 0.65rem;
+  padding-left: 1rem;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nav-link {
+  border: 2px solid var(--border);
+  background: var(--foreground);
+  color: var(--background);
+  padding: 0.65rem 0.85rem;
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.nav-link:hover {
+  background: transparent;
+  color: var(--foreground);
+}
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(19rem, 0.76fr) minmax(0, 1.24fr);
+  gap: 3.5rem;
+  padding: 4rem 0 3rem;
+}
+
+.form-column {
+  min-width: 0;
+}
+
+.task-column {
+  min-width: 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-bottom: 3px solid var(--border);
+  padding-bottom: 0.9rem;
+}
+
+.section-heading h2 {
+  margin: 0.25rem 0 0;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.record-count {
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.1em;
+  line-height: 0.72;
+}
+
+.section-intro {
+  max-width: 36rem;
+  margin: 0.9rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.task-list-wrap {
+  margin-top: 1.4rem;
+}
+
+.task-form {
+  border: 3px solid var(--border);
+  background: var(--paper);
+  box-shadow: 7px 7px 0 var(--foreground);
+}
+
+.form-heading {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1rem;
+  overflow: hidden;
+  background: var(--foreground);
+  color: var(--paper);
+  padding: 1.4rem;
+}
+
+.form-heading::after {
+  position: absolute;
+  right: -1.25rem;
+  bottom: -1.25rem;
+  width: 5rem;
+  height: 5rem;
+  border: 1px dashed var(--paper);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.form-heading h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.form-heading > p:last-child {
+  grid-column: 1 / -1;
+  max-width: 23rem;
+  margin: 0.45rem 0 0;
+  padding-right: 2rem;
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.form-index {
+  position: relative;
+  z-index: 1;
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -0.12em;
+  line-height: 0.8;
+}
+
+.form-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  padding: 1.4rem;
+}
+
+.field-group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.field-group > span {
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.field-group b {
+  font-size: 0.85rem;
+}
+
+.field-span {
+  grid-column: 1 / -1;
+}
+
+.field-control {
+  width: 100%;
+  border: 2px solid var(--border);
+  background: #fff6d2;
+  color: var(--foreground);
+  outline: none;
+}
+
+.field-control {
+  min-height: 3rem;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.field-textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.field-control:focus {
+  background: #fffbe9;
+  box-shadow: 0 0 0 3px var(--background), 0 0 0 5px var(--foreground);
+}
+
+.form-message {
+  margin: 1.2rem 1.4rem 0;
+  border: 2px solid var(--border);
+  padding: 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.form-message-error {
+  background: var(--foreground);
+  color: var(--paper);
+}
+
+.form-actions {
+  padding: 0 1.4rem 1.4rem;
+}
+
+.form-actions-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.button-primary,
+.button-secondary,
+.button-danger {
+  display: inline-flex;
+  min-height: 2.8rem;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+  padding: 0.7rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.button-primary {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--foreground);
+}
+
+.button-danger {
+  border-style: dashed;
+  background: transparent;
+  color: var(--foreground);
+}
+
+.button-primary:hover,
+.button-secondary:hover,
+.button-danger:hover {
+  background: var(--background);
+  color: var(--foreground);
+  transform: translate(-2px, -2px);
+}
+
+.button-primary:disabled,
+.button-danger:disabled {
+  opacity: 0.5;
+  transform: none;
+}
+
+.form-actions .button-primary,
+.form-actions .button-secondary {
+  width: 100%;
+}
+
+.button-compact {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.64rem;
+}
+
+.task-list {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.task-card {
+  border: 2px solid var(--border);
+  background: var(--paper);
+  box-shadow: 5px 5px 0 var(--foreground);
+}
+
+.task-card-topline,
+.archive-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--foreground);
+  color: var(--paper);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.status-badge {
+  border: 1px solid currentColor;
+  padding: 0.25rem 0.45rem;
+  white-space: nowrap;
+}
+
+.task-card-body,
+.archive-card-body {
+  padding: 1.35rem;
+}
+
+.task-card-body h3,
+.archive-card-body h3 {
+  overflow-wrap: anywhere;
+  margin: 0.45rem 0 0;
+  font-size: 1.55rem;
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 1.04;
+  text-transform: uppercase;
+}
+
+.task-description {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.task-meta,
+.archive-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  background: var(--surface);
+}
+
+.task-meta > div,
+.archive-meta > div {
+  padding: 0.8rem 1.35rem;
+}
+
+.task-meta > div + div,
+.archive-meta > div + div {
+  border-left: 1px dashed var(--border);
+}
+
+.task-meta dt,
+.archive-meta dt {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.task-meta dd,
+.archive-meta dd {
+  margin: 0.3rem 0 0;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.task-controls {
+  padding: 1rem 1.35rem 1.25rem;
+}
+
+.task-card-checked {
+  box-shadow: 5px 5px 0 var(--muted);
+}
+
+.task-card-checked .task-card-body h3 {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.status-badge-checked {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.status-picker {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.status-picker fieldset {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.status-picker legend {
+  margin-bottom: 0.55rem;
+  padding: 0;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.status-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.status-option {
+  display: flex;
+  min-width: 0;
+  min-height: 3.25rem;
+  align-items: center;
+  gap: 0.55rem;
+  border: 2px solid var(--border);
+  background: transparent;
+  color: var(--foreground);
+  padding: 0.55rem;
+  font-size: 0.67rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+  transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.status-option:hover:not(:disabled) {
+  background: var(--background);
+  transform: translate(-2px, -2px);
+}
+
+.status-option.is-active {
+  background: var(--foreground);
+  color: var(--paper);
+  opacity: 1;
+}
+
+.status-option-check {
+  display: grid;
+  width: 1.4rem;
+  height: 1.4rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid currentColor;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.control-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  border-left: 3px solid var(--border);
+  padding-left: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.85rem;
+}
+
+.empty-state {
+  position: relative;
+  min-height: 15rem;
+  overflow: hidden;
+  border: 3px dashed var(--border);
+  background: var(--surface);
+  padding: 2rem;
+}
+
+.empty-state-mark {
+  position: absolute;
+  right: -0.4rem;
+  bottom: -1.6rem;
+  color: rgba(16, 18, 15, 0.12);
+  font-size: 10rem;
+  font-weight: 900;
+  letter-spacing: -0.16em;
+  line-height: 1;
+}
+
+.empty-state h3 {
+  position: relative;
+  margin: 1rem 0 0;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.empty-state > p:last-child {
+  position: relative;
+  max-width: 27rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.archive-section {
+  padding: 4rem 0 3rem;
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+  margin-top: 1.5rem;
+}
+
+.archive-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border: 2px solid var(--border);
+  background: var(--paper);
+  box-shadow: 5px 5px 0 var(--foreground);
+}
+
+.archive-card-body {
+  flex: 1;
+}
+
+.archive-meta {
+  border-bottom: 0;
+}
+
+.not-found-panel {
+  margin-top: 12vh;
+  border: 3px solid var(--border);
+  background: var(--paper);
+  box-shadow: 8px 8px 0 var(--foreground);
+  padding: clamp(2rem, 7vw, 5rem);
+}
+
+.not-found-panel h1 {
+  margin: 0.8rem 0 0;
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -0.09em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.not-found-panel > p:not(.eyebrow) {
+  max-width: 32rem;
+  margin: 1.25rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.not-found-panel .button-primary {
+  margin-top: 1.5rem;
+}
+
+.edit-form-wrap {
+  margin: 3.5rem auto;
+  max-width: 44rem;
+}
+
+.button-primary:focus-visible,
+.button-secondary:focus-visible,
+.button-danger:focus-visible,
+.status-option:focus-visible,
+.nav-link:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   button,
   input,
+  select,
   textarea {
-    transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+}
+
+@media (min-width: 901px) {
+  .form-column {
+    align-self: start;
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .masthead-grid,
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .masthead-copy {
+    border-top: 3px solid var(--border);
+    border-left: 0;
+  }
+
+  .masthead-copy h1 {
+    font-size: clamp(2.6rem, 12vw, 4.7rem);
+  }
+
+  .workspace-grid {
+    gap: 3.25rem;
+    padding-top: 3rem;
+  }
+
+  .archive-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    padding: 0.6rem;
+  }
+
+  .masthead {
+    box-shadow: 5px 5px 0 var(--foreground);
+  }
+
+  .masthead-logo {
+    min-height: 9.5rem;
+  }
+
+  .masthead-copy {
+    padding: 1.25rem;
+  }
+
+  .masthead-description {
+    margin-top: 0.9rem;
+  }
+
+  .masthead-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 0.8rem;
+  }
+
+  .nav-link {
+    text-align: center;
+  }
+
+  .workspace-grid,
+  .archive-section {
+    padding-top: 2.5rem;
+  }
+
+  .section-heading h2 {
+    font-size: 2rem;
+  }
+
+  .record-count {
+    font-size: 2.8rem;
+  }
+
+  .form-fields,
+  .form-actions-split,
+  .task-meta,
+  .archive-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .field-span {
+    grid-column: auto;
+  }
+
+  .task-meta > div + div,
+  .archive-meta > div + div {
+    border-top: 1px dashed var(--border);
+    border-left: 0;
+  }
+
+  .status-options {
+    grid-template-columns: 1fr;
+  }
+
+  .secondary-actions,
+  .secondary-actions > a,
+  .secondary-actions > form,
+  .secondary-actions button {
+    width: 100%;
   }
 }
