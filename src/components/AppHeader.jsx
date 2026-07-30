@@ -1,19 +1,20 @@
-import Image from "next/image";
 import Link from "next/link";
+
+const checkpointWordmark = ` ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗██████╗  ██████╗ ██╗███╗   ██╗████████╗
+██╔════╝██║  ██║██╔════╝██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗██║████╗  ██║╚══██╔══╝
+██║     ███████║█████╗  ██║     █████╔╝ ██████╔╝██║   ██║██║██╔██╗ ██║   ██║
+██║     ██╔══██║██╔══╝  ██║     ██╔═██╗ ██╔═══╝ ██║   ██║██║██║╚██╗██║   ██║
+╚██████╗██║  ██║███████╗╚██████╗██║  ██╗██║     ╚██████╔╝██║██║ ╚████║   ██║
+ ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝╚═╝  ╚═══╝   ╚═╝`;
 
 export default function AppHeader({ title, description, navHref, navLabel, marker }) {
   return (
     <header className="masthead">
       <div className="masthead-grid">
         <div className="masthead-logo">
-          <Image
-            alt="Checkpoint"
-            className="object-cover object-center"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 46rem"
-            src="/images/checkpoint-logo.png"
-          />
+          <span className="sr-only">Checkpoint</span>
+          <pre aria-hidden="true" className="ansi-logo">{checkpointWordmark}</pre>
+          <span aria-hidden="true" className="compact-logo">Checkpoint</span>
         </div>
 
         <div className="masthead-copy">
