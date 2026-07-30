@@ -89,6 +89,27 @@ export function validateTaskId(id) {
   return { value: taskId };
 }
 
+export function validateTaskUpdateInput({ id, title, description, dueDate, topic }) {
+  const idValidation = validateTaskId(id);
+
+  if (idValidation.error) {
+    return idValidation;
+  }
+
+  const taskValidation = validateTaskInput({ title, description, dueDate, topic });
+
+  if (taskValidation.error) {
+    return taskValidation;
+  }
+
+  return {
+    value: {
+      id: idValidation.value,
+      ...taskValidation.value,
+    },
+  };
+}
+
 export function updateTaskStatus(id, status) {
   const validation = validateTaskStatusInput({ id, status });
 
@@ -124,6 +145,50 @@ export function getActiveTasks() {
        ORDER BY id DESC`,
     )
     .all();
+}
+
+export function getActiveTaskById(id) {
+  const validation = validateTaskId(id);
+
+  if (validation.error) {
+    return null;
+  }
+
+  return getDatabase()
+    .prepare(
+      `SELECT * FROM tasks
+       WHERE id = ? AND archived_at IS NULL`,
+    )
+    .get(validation.value) ?? null;
+}
+
+export function updateTask(input) {
+  const validation = validateTaskUpdateInput(input);
+
+  if (validation.error) {
+    throw new Error(validation.error);
+  }
+
+  const database = getDatabase();
+  const result = database
+    .prepare(
+      `UPDATE tasks
+       SET title = ?, description = ?, due_date = ?, topic = ?, updated_at = CURRENT_TIMESTAMP
+       WHERE id = ? AND archived_at IS NULL`,
+    )
+    .run(
+      validation.value.title,
+      validation.value.description,
+      validation.value.dueDate,
+      validation.value.topic,
+      validation.value.id,
+    );
+
+  if (result.changes === 0) {
+    return null;
+  }
+
+  return getActiveTaskById(validation.value.id);
 }
 
 export function archiveTask(id) {

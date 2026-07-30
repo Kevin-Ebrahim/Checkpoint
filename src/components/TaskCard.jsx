@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
+import Link from "next/link";
 import { archiveTaskAction, updateTaskStatusAction } from "../app/actions";
 
 const initialState = {};
@@ -65,6 +66,15 @@ export default function TaskCard({ task }) {
           <dd className="mt-1 font-bold">{task.topic}</dd>
         </div>
       </dl>
+
+      <div className="mt-4 border-t border-dashed border-[var(--border)] pt-4">
+        <Link
+          className="inline-block border-2 border-[var(--border)] bg-transparent px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[var(--foreground)] hover:text-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)] focus:ring-offset-2 focus:ring-offset-[#f8edbd]"
+          href={`/edit/${task.id}`}
+        >
+          Edit task
+        </Link>
+      </div>
 
       <form action={formAction} className="mt-4 border-t border-dashed border-[var(--border)] pt-4">
         <input name="taskId" type="hidden" value={task.id} />
