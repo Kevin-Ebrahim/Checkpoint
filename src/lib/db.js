@@ -39,3 +39,13 @@ export function getDatabase() {
 
   return database;
 }
+
+export function closeDatabase() {
+  if (!database) {
+    return;
+  }
+
+  database.close();
+  database = undefined;
+  openDatabasePath = undefined;
+}

@@ -26,5 +26,12 @@ ESLint checks JavaScript code quality, and `eslint-config-next` supplies
 Next.js-specific linting rules. They were selected to provide the project's
 documented lint command.
 
+## Vitest
+
+Vitest is the development test runner for Checkpoint's automated task and
+database behaviour tests. It was selected for its straightforward JavaScript
+test API, one-shot command support, and compatibility with the project's ES
+module code.
+
 The preceding document was generated with the assistance of Codex
 CLI[gpt-5.6-terra].
