@@ -34,4 +34,4 @@ test API, one-shot command support, and compatibility with the project's ES
 module code.
 
 The preceding document was generated with the assistance of Codex
-CLI[gpt-5.6-terra].
+CLI[gpt-5.6-terra (medium)].

@@ -15,12 +15,13 @@ inter-table relationships.
 | `created_at` | TEXT | Required timestamp, defaulting to SQLite's `CURRENT_TIMESTAMP`. |
 | `updated_at` | TEXT | Required timestamp, defaulting to SQLite's `CURRENT_TIMESTAMP`. |
 
-Active tasks will be selected with `WHERE archived_at IS NULL`; archived tasks
-will be selected with `WHERE archived_at IS NOT NULL`. No archive table is
-used, so archiving does not delete or copy a task.
+Active tasks are selected with `WHERE archived_at IS NULL`; archived tasks are
+selected with `WHERE archived_at IS NOT NULL`. No archive table is used, so
+archiving does not delete or copy a task.
 
-Overdue is deliberately not stored in the database. It will be derived from a
-task's `due_date`, the current date, and whether its status is `Complete`.
+Overdue is deliberately not stored in the database. It is derived when a
+task's `due_date` is before the current date and its status is not `Complete`.
+Completed tasks are never overdue.
 
 The preceding document was generated with the assistance of Codex
-CLI[gpt-5.6-terra].
+CLI[gpt-5.6-terra (medium)].
