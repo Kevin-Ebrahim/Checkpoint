@@ -47,16 +47,24 @@ function StatusOptionButton({ currentStatus, label, value }) {
 
 export default function TaskCard({ task }) {
   const isComplete = task.status === "Complete";
+  const cardClassName = [
+    "task-card",
+    isComplete ? "task-card-checked" : "",
+    task.overdue ? "task-card-overdue" : "",
+  ].filter(Boolean).join(" ");
   const [state, formAction] = useActionState(updateTaskStatusAction, initialState);
   const [archiveState, archiveFormAction] = useActionState(archiveTaskAction, initialState);
 
   return (
-    <article className={isComplete ? "task-card task-card-checked" : "task-card"}>
+    <article className={cardClassName}>
       <div className="task-card-topline">
         <span>#{String(task.id).padStart(3, "0")}</span>
-        <span className={isComplete ? "status-badge status-badge-checked" : "status-badge"}>
-          {isComplete ? "✓ " : ""}{task.status}
-        </span>
+        <div className="task-card-flags">
+          {task.overdue ? <span className="overdue-badge">Overdue</span> : null}
+          <span className={isComplete ? "status-badge status-badge-checked" : "status-badge"}>
+            {isComplete ? "✓ " : ""}{task.status}
+          </span>
+        </div>
       </div>
 
       <div className="task-card-body">
@@ -70,9 +78,10 @@ export default function TaskCard({ task }) {
       </div>
 
       <dl className="task-meta">
-        <div>
+        <div className={task.overdue ? "due-date-meta is-overdue" : "due-date-meta"}>
           <dt>Due date</dt>
           <dd>{task.due_date}</dd>
+          {task.overdue ? <span className="overdue-date-label">Overdue</span> : null}
         </div>
         <div>
           <dt>Topic</dt>

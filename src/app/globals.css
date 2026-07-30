@@ -497,6 +497,7 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 1rem;
   background: var(--foreground);
   color: var(--paper);
@@ -505,6 +506,14 @@ button:disabled {
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.task-card-flags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem;
 }
 
 .status-badge {
@@ -569,6 +578,49 @@ button:disabled {
   overflow-wrap: anywhere;
   font-size: 0.8rem;
   font-weight: 900;
+}
+
+.task-card-overdue {
+  border-width: 3px;
+  box-shadow: 7px 7px 0 var(--foreground);
+}
+
+.overdue-badge {
+  border: 1px solid var(--paper);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 3px,
+    rgba(246, 233, 176, 0.24) 3px,
+    rgba(246, 233, 176, 0.24) 6px
+  );
+  padding: 0.25rem 0.45rem;
+  white-space: nowrap;
+}
+
+.due-date-meta.is-overdue {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 7px,
+    rgba(16, 18, 15, 0.12) 7px,
+    rgba(16, 18, 15, 0.12) 10px
+  );
+  box-shadow: inset 0 0 0 3px var(--foreground);
+}
+
+.overdue-date-label {
+  display: inline-block;
+  margin-top: 0.55rem;
+  border: 2px solid var(--border);
+  background: var(--foreground);
+  color: var(--paper);
+  padding: 0.25rem 0.4rem;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .task-controls {

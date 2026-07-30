@@ -20,6 +20,18 @@ export function normalizeActiveTaskSort(sort) {
     : DEFAULT_ACTIVE_TASK_SORT;
 }
 
+export function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+export function isOverdue(task, today = getLocalDateString()) {
+  return task.due_date < today && task.status !== "Complete";
+}
+
 function isValidDate(value) {
   if (!DATE_PATTERN.test(value)) {
     return false;

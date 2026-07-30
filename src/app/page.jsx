@@ -2,7 +2,12 @@ import Link from "next/link";
 import AppHeader from "../components/AppHeader";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
-import { getActiveTasks, normalizeActiveTaskSort } from "../lib/tasks";
+import {
+  getActiveTasks,
+  getLocalDateString,
+  isOverdue,
+  normalizeActiveTaskSort,
+} from "../lib/tasks";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +21,11 @@ const sortOptions = [
 export default async function Home({ searchParams }) {
   const params = await searchParams;
   const selectedSort = normalizeActiveTaskSort(params?.sort);
-  const tasks = getActiveTasks(selectedSort);
+  const today = getLocalDateString();
+  const tasks = getActiveTasks(selectedSort).map((task) => ({
+    ...task,
+    overdue: isOverdue(task, today),
+  }));
 
   return (
     <main className="app-shell">
