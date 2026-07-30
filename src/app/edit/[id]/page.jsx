@@ -1,5 +1,4 @@
 import Link from "next/link";
-import AppHeader from "../../../components/AppHeader";
 import TaskForm from "../../../components/TaskForm";
 import { getActiveTaskById } from "../../../lib/tasks";
 
@@ -34,14 +33,7 @@ export default async function EditTaskPage({ params }) {
   return (
     <main className="app-shell">
       <div className="app-frame compact-frame">
-        <AppHeader
-          description="Revise the task details while keeping its history and current status intact."
-          marker={`Task #${String(task.id).padStart(3, "0")}`}
-          navHref="/"
-          navLabel="Cancel editing"
-          title="Edit task"
-        />
-
+        <h1 className="sr-only">Edit task</h1>
         <div className="edit-form-wrap">
           <TaskForm task={task} />
         </div>
