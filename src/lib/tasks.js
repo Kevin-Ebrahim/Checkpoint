@@ -66,17 +66,27 @@ export function createTask(input) {
 }
 
 export function validateTaskStatusInput({ id, status }) {
-  const taskId = Number(id);
+  const idValidation = validateTaskId(id);
 
-  if (!Number.isSafeInteger(taskId) || taskId < 1) {
-    return { error: "Please select a valid task." };
+  if (idValidation.error) {
+    return idValidation;
   }
 
   if (!TASK_STATUSES.includes(status)) {
     return { error: "Please select a valid task status." };
   }
 
-  return { value: { id: taskId, status } };
+  return { value: { id: idValidation.value, status } };
+}
+
+export function validateTaskId(id) {
+  const taskId = Number(id);
+
+  if (!Number.isSafeInteger(taskId) || taskId < 1) {
+    return { error: "Please select a valid task." };
+  }
+
+  return { value: taskId };
 }
 
 export function updateTaskStatus(id, status) {
@@ -112,6 +122,49 @@ export function getActiveTasks() {
       `SELECT * FROM tasks
        WHERE archived_at IS NULL
        ORDER BY id DESC`,
+    )
+    .all();
+}
+
+export function archiveTask(id) {
+  const validation = validateTaskId(id);
+
+  if (validation.error) {
+    throw new Error(validation.error);
+  }
+
+  const database = getDatabase();
+  const task = database
+    .prepare("SELECT * FROM tasks WHERE id = ?")
+    .get(validation.value);
+
+  if (!task) {
+    return null;
+  }
+
+  if (task.archived_at !== null) {
+    return task;
+  }
+
+  database
+    .prepare(
+      `UPDATE tasks
+       SET archived_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
+       WHERE id = ? AND archived_at IS NULL`,
+    )
+    .run(validation.value);
+
+  return database
+    .prepare("SELECT * FROM tasks WHERE id = ?")
+    .get(validation.value);
+}
+
+export function getArchivedTasks() {
+  return getDatabase()
+    .prepare(
+      `SELECT * FROM tasks
+       WHERE archived_at IS NOT NULL
+       ORDER BY archived_at DESC, id DESC`,
     )
     .all();
 }

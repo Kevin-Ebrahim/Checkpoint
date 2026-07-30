@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { updateTaskStatusAction } from "../app/actions";
+import { archiveTaskAction, updateTaskStatusAction } from "../app/actions";
 
 const initialState = {};
 const taskStatuses = ["Todo", "In-Progress", "Complete"];
@@ -21,8 +21,23 @@ function StatusSubmitButton() {
   );
 }
 
+function ArchiveSubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="border-2 border-[var(--border)] bg-transparent px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] transition-colors hover:bg-[var(--foreground)] hover:text-[var(--background)] disabled:cursor-not-allowed disabled:opacity-60"
+      disabled={pending}
+      type="submit"
+    >
+      {pending ? "Archiving..." : "Archive task"}
+    </button>
+  );
+}
+
 export default function TaskCard({ task }) {
   const [state, formAction] = useActionState(updateTaskStatusAction, initialState);
+  const [archiveState, archiveFormAction] = useActionState(archiveTaskAction, initialState);
 
   return (
     <article className="relative border-2 border-[var(--border)] bg-[#f8edbd] p-4 sm:p-5">
@@ -73,6 +88,16 @@ export default function TaskCard({ task }) {
         </div>
         {state.error ? <p className="mt-3 text-sm font-bold" role="alert">{state.error}</p> : null}
         {state.success ? <p className="mt-3 text-sm font-bold" role="status">Status updated.</p> : null}
+      </form>
+
+      <form action={archiveFormAction} className="mt-4 border-t border-dashed border-[var(--border)] pt-4">
+        <input name="taskId" type="hidden" value={task.id} />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-[10px] font-bold tracking-[0.15em]">REMOVE FROM ACTIVE QUEUE</p>
+          <ArchiveSubmitButton />
+        </div>
+        {archiveState.error ? <p className="mt-3 text-sm font-bold" role="alert">{archiveState.error}</p> : null}
+        {archiveState.success ? <p className="mt-3 text-sm font-bold" role="status">Task archived.</p> : null}
       </form>
     </article>
   );

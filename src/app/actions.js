@@ -2,8 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import {
+  archiveTask,
   createTask,
   updateTaskStatus,
+  validateTaskId,
   validateTaskInput,
   validateTaskStatusInput,
 } from "../lib/tasks";
@@ -52,5 +54,27 @@ export async function updateTaskStatusAction(previousState, formData) {
   }
 
   revalidatePath("/");
+  return { success: true };
+}
+
+export async function archiveTaskAction(previousState, formData) {
+  const validation = validateTaskId(formData.get("taskId"));
+
+  if (validation.error) {
+    return { error: validation.error };
+  }
+
+  try {
+    const task = archiveTask(validation.value);
+
+    if (!task) {
+      return { error: "That task could not be found." };
+    }
+  } catch {
+    return { error: "We could not archive that task. Please try again." };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/archive");
   return { success: true };
 }

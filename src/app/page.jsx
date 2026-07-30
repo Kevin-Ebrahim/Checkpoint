@@ -1,6 +1,7 @@
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
 import { getActiveTasks } from "../lib/tasks";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +31,9 @@ export default function Home() {
           </div>
           <div className="mt-4 flex items-center justify-between border-t border-dashed border-[var(--border)] pt-3 text-[10px] font-bold tracking-[0.16em]">
             <span>WORKSPACE: CURRENT TASKS</span>
-            <span aria-hidden="true">[ READY ]</span>
+            <Link className="border-2 border-[var(--border)] px-2 py-1 transition-colors hover:bg-[var(--foreground)] hover:text-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)] focus:ring-offset-2 focus:ring-offset-[var(--background)]" href="/archive">
+              ARCHIVED TASKS
+            </Link>
           </div>
         </header>
 
