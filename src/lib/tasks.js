@@ -1,6 +1,7 @@
 import { getDatabase } from "./db";
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+export const TASK_STATUSES = ["Todo", "In-Progress", "Complete"];
 
 function isValidDate(value) {
   if (!DATE_PATTERN.test(value)) {
@@ -62,6 +63,47 @@ export function createTask(input) {
   return database
     .prepare("SELECT * FROM tasks WHERE id = ?")
     .get(result.lastInsertRowid);
+}
+
+export function validateTaskStatusInput({ id, status }) {
+  const taskId = Number(id);
+
+  if (!Number.isSafeInteger(taskId) || taskId < 1) {
+    return { error: "Please select a valid task." };
+  }
+
+  if (!TASK_STATUSES.includes(status)) {
+    return { error: "Please select a valid task status." };
+  }
+
+  return { value: { id: taskId, status } };
+}
+
+export function updateTaskStatus(id, status) {
+  const validation = validateTaskStatusInput({ id, status });
+
+  if (validation.error) {
+    throw new Error(validation.error);
+  }
+
+  const database = getDatabase();
+  const result = database
+    .prepare(
+      `UPDATE tasks
+       SET status = ?, updated_at = CURRENT_TIMESTAMP
+       WHERE id = ? AND status <> ?`,
+    )
+    .run(validation.value.status, validation.value.id, validation.value.status);
+
+  if (result.changes === 0) {
+    return database
+      .prepare("SELECT * FROM tasks WHERE id = ?")
+      .get(validation.value.id) ?? null;
+  }
+
+  return database
+    .prepare("SELECT * FROM tasks WHERE id = ?")
+    .get(validation.value.id);
 }
 
 export function getActiveTasks() {

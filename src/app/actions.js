@@ -1,7 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createTask, validateTaskInput } from "../lib/tasks";
+import {
+  createTask,
+  updateTaskStatus,
+  validateTaskInput,
+  validateTaskStatusInput,
+} from "../lib/tasks";
 
 export async function createTaskAction(previousState, formData) {
   const input = {
@@ -20,6 +25,30 @@ export async function createTaskAction(previousState, formData) {
     createTask(validation.value);
   } catch {
     return { error: "We could not create that task. Please try again." };
+  }
+
+  revalidatePath("/");
+  return { success: true };
+}
+
+export async function updateTaskStatusAction(previousState, formData) {
+  const validation = validateTaskStatusInput({
+    id: formData.get("taskId"),
+    status: formData.get("status"),
+  });
+
+  if (validation.error) {
+    return { error: validation.error };
+  }
+
+  try {
+    const task = updateTaskStatus(validation.value.id, validation.value.status);
+
+    if (!task) {
+      return { error: "That task could not be found." };
+    }
+  } catch {
+    return { error: "We could not update that task status. Please try again." };
   }
 
   revalidatePath("/");

@@ -1,4 +1,29 @@
+"use client";
+
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import { updateTaskStatusAction } from "../app/actions";
+
+const initialState = {};
+const taskStatuses = ["Todo", "In-Progress", "Complete"];
+
+function StatusSubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      className="border-2 border-[var(--border)] bg-[var(--foreground)] px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[var(--background)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--foreground)] disabled:cursor-not-allowed disabled:opacity-60"
+      disabled={pending}
+      type="submit"
+    >
+      {pending ? "Updating..." : "Update status"}
+    </button>
+  );
+}
+
 export default function TaskCard({ task }) {
+  const [state, formAction] = useActionState(updateTaskStatusAction, initialState);
+
   return (
     <article className="relative border-2 border-[var(--border)] bg-[#f8edbd] p-4 sm:p-5">
       <span aria-hidden="true" className="absolute left-2 top-2 h-2 w-2 bg-[var(--foreground)]" />
@@ -25,6 +50,30 @@ export default function TaskCard({ task }) {
           <dd className="mt-1 font-bold">{task.topic}</dd>
         </div>
       </dl>
+
+      <form action={formAction} className="mt-4 border-t border-dashed border-[var(--border)] pt-4">
+        <input name="taskId" type="hidden" value={task.id} />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <label className="block text-[10px] font-bold tracking-[0.15em]" htmlFor={`status-${task.id}`}>
+              STATUS
+            </label>
+            <select
+              className="mt-1 w-full border-2 border-[var(--border)] bg-[var(--background)] px-3 py-2 font-mono text-sm font-bold focus:outline-2 focus:outline-offset-2 focus:outline-[var(--foreground)]"
+              defaultValue={task.status}
+              id={`status-${task.id}`}
+              name="status"
+            >
+              {taskStatuses.map((status) => (
+                <option key={status} value={status}>{status}</option>
+              ))}
+            </select>
+          </div>
+          <StatusSubmitButton />
+        </div>
+        {state.error ? <p className="mt-3 text-sm font-bold" role="alert">{state.error}</p> : null}
+        {state.success ? <p className="mt-3 text-sm font-bold" role="status">Status updated.</p> : null}
+      </form>
     </article>
   );
 }
